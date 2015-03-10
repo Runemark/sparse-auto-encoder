@@ -14,9 +14,23 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5BF1138F1AAF726E00879C4C"
-               BuildableName = "autoencoder"
+               BlueprintIdentifier = "5BF113BB1AAF787400879C4C"
+               BuildableName = "autoencoder.app"
                BlueprintName = "autoencoder"
+               ReferencedContainer = "container:autoencoder.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "5BF113D31AAF787400879C4C"
+               BuildableName = "autoencoderTests.xctest"
+               BlueprintName = "autoencoderTests"
                ReferencedContainer = "container:autoencoder.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,12 +42,22 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "5BF113D31AAF787400879C4C"
+               BuildableName = "autoencoderTests.xctest"
+               BlueprintName = "autoencoderTests"
+               ReferencedContainer = "container:autoencoder.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5BF1138F1AAF726E00879C4C"
-            BuildableName = "autoencoder"
+            BlueprintIdentifier = "5BF113BB1AAF787400879C4C"
+            BuildableName = "autoencoder.app"
             BlueprintName = "autoencoder"
             ReferencedContainer = "container:autoencoder.xcodeproj">
          </BuildableReference>
@@ -51,8 +75,8 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5BF1138F1AAF726E00879C4C"
-            BuildableName = "autoencoder"
+            BlueprintIdentifier = "5BF113BB1AAF787400879C4C"
+            BuildableName = "autoencoder.app"
             BlueprintName = "autoencoder"
             ReferencedContainer = "container:autoencoder.xcodeproj">
          </BuildableReference>
@@ -69,8 +93,8 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5BF1138F1AAF726E00879C4C"
-            BuildableName = "autoencoder"
+            BlueprintIdentifier = "5BF113BB1AAF787400879C4C"
+            BuildableName = "autoencoder.app"
             BlueprintName = "autoencoder"
             ReferencedContainer = "container:autoencoder.xcodeproj">
          </BuildableReference>
