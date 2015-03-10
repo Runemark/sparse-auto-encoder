@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Runemark Studios. All rights reserved.
 //
 //  iOS image IO in swift based on this wonderful tutorial: http://www.raywenderlich.com/76285/beginning-core-image-swift
+//  Extension to extract the RGBA values from a UIImage from this answer:
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Useful bits
@@ -27,13 +28,31 @@ class ViewController: UIViewController {
         
         let fileURL = NSBundle.mainBundle().URLForResource("square1", withExtension:"png")
         let beginImage = CIImage(contentsOfURL:fileURL)
+        
+        let context = CIContext(options:nil)
+        let cgimg = context.createCGImage(beginImage, fromRect:beginImage.extent())
+        let width = Int(beginImage.extent().width)
+        let height = Int(beginImage.extent().height)
+        
+        var alphaValues = [[CGFloat]]()
+        
+        if let newImage = UIImage(CGImage:cgimg)
+        {
+            for y in 0..<width
+            {
+                var alphaValueRow = [CGFloat]()
+                for x in 0..<height
+                {
+                    alphaValueRow.append(newImage.getPixelAlphaAtLocation(CGPointMake(CGFloat(x), CGFloat(y)))!)
+                }
+                alphaValues.append(alphaValueRow)
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
 }
 

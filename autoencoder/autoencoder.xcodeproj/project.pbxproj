@@ -25,6 +25,8 @@
 		5BF113F91AAF789200879C4C /* square3.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BF113EE1AAF789200879C4C /* square3.png */; };
 		5BF113FA1AAF789200879C4C /* square4.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BF113EF1AAF789200879C4C /* square4.png */; };
 		5BF113FB1AAF789200879C4C /* square5.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BF113F01AAF789200879C4C /* square5.png */; };
+		5BF113FD1AAF9D2100879C4C /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF113FC1AAF9D2100879C4C /* UIImageExtension.swift */; };
+		5BF114021AAFA9FD00879C4C /* Instance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF114011AAFA9FD00879C4C /* Instance.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +62,8 @@
 		5BF113EE1AAF789200879C4C /* square3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = square3.png; sourceTree = "<group>"; };
 		5BF113EF1AAF789200879C4C /* square4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = square4.png; sourceTree = "<group>"; };
 		5BF113F01AAF789200879C4C /* square5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = square5.png; sourceTree = "<group>"; };
+		5BF113FC1AAF9D2100879C4C /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
+		5BF114011AAFA9FD00879C4C /* Instance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Instance.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +109,8 @@
 				5BF113E61AAF789200879C4C /* shapes */,
 				5BF113C11AAF787400879C4C /* AppDelegate.swift */,
 				5BF113C61AAF787400879C4C /* ViewController.swift */,
+				5BF113FE1AAFA9D100879C4C /* Learning */,
+				5BF113FC1AAF9D2100879C4C /* UIImageExtension.swift */,
 				5BF113C81AAF787400879C4C /* Main.storyboard */,
 				5BF113CB1AAF787400879C4C /* Images.xcassets */,
 				5BF113CD1AAF787400879C4C /* LaunchScreen.xib */,
@@ -162,6 +168,14 @@
 				5BF113F01AAF789200879C4C /* square5.png */,
 			);
 			path = shapes;
+			sourceTree = "<group>";
+		};
+		5BF113FE1AAFA9D100879C4C /* Learning */ = {
+			isa = PBXGroup;
+			children = (
+				5BF114011AAFA9FD00879C4C /* Instance.swift */,
+			);
+			name = Learning;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -275,9 +289,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5BF114021AAFA9FD00879C4C /* Instance.swift in Sources */,
 				5BF113C71AAF787400879C4C /* ViewController.swift in Sources */,
 				5BF113C21AAF787400879C4C /* AppDelegate.swift in Sources */,
 				5BF113C51AAF787400879C4C /* autoencoder.xcdatamodeld in Sources */,
+				5BF113FD1AAF9D2100879C4C /* UIImageExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -471,6 +487,7 @@
 				5BF113E01AAF787400879C4C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5BF113E11AAF787400879C4C /* Build configuration list for PBXNativeTarget "autoencoderTests" */ = {
 			isa = XCConfigurationList;
@@ -479,6 +496,7 @@
 				5BF113E31AAF787400879C4C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
