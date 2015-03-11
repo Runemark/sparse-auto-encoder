@@ -10,10 +10,10 @@ import Foundation
 
 class Instance
 {
-    var features = [Double]()
-    var outputs = [Double]()
+    var features = [Float]()
+    var outputs = [Float]()
     
-    init(features:[Double], outputs:[Double])
+    init(features:[Float], outputs:[Float])
     {
         self.features = features
         self.outputs = outputs

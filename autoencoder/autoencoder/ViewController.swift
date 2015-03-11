@@ -26,7 +26,61 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        let fileURL = NSBundle.mainBundle().URLForResource("square1", withExtension:"png")
+        let instances = instancesFromImageNamed("square1", windowWidth:8, windowHeight:8)
+        println("Complete")
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    func instancesFromImageNamed(imageName:String, windowWidth:Int, windowHeight:Int) -> [Instance]
+    {
+        let alphaValues = alphaValuesInImageFile(imageName)
+        let chunks = slideWindowOverValues(alphaValues, windowWidth:windowWidth, windowHeight:windowHeight)
+        
+        var instances = [Instance]()
+        for chunk in chunks
+        {
+            let featureVector = chunk.toVector()
+            let instance = Instance(features:featureVector, outputs:[Float(0)])
+            instances.append(instance)
+        }
+        
+        return instances
+    }
+    
+    func slideWindowOverValues(values:Array2D, windowWidth:Int, windowHeight:Int) -> [Array2D]
+    {
+        var chunks = [Array2D]()
+        
+        if windowWidth < values.colCount()  && windowHeight < values.rowCount()
+        {
+            for x in 0...values.rowCount() - windowHeight
+            {
+                for y in 0...values.colCount() - windowWidth
+                {
+                    // Chunk identified, populate Array2D with values
+                    var chunk = Array2D(cols:windowWidth, rows:windowHeight)
+                    for chunk_x in 0..<windowHeight
+                    {
+                        for chunk_y in 0..<windowWidth
+                        {
+                            chunk[chunk_x, chunk_y] = values[x+chunk_x, y+chunk_y]
+                        }
+                    }
+                    chunks.append(chunk)
+                }
+            }
+        }
+        
+        return chunks
+    }
+    
+    func alphaValuesInImageFile(fileName:String) -> Array2D
+    {
+        let fileURL = NSBundle.mainBundle().URLForResource(fileName, withExtension:"png")
         let beginImage = CIImage(contentsOfURL:fileURL)
         
         let context = CIContext(options:nil)
@@ -34,25 +88,20 @@ class ViewController: UIViewController {
         let width = Int(beginImage.extent().width)
         let height = Int(beginImage.extent().height)
         
-        var alphaValues = [[CGFloat]]()
+        var alphaValues = Array2D(cols:width, rows:height)
         
         if let newImage = UIImage(CGImage:cgimg)
         {
-            for y in 0..<width
+            for x in 0..<height
             {
-                var alphaValueRow = [CGFloat]()
-                for x in 0..<height
+                for y in 0..<width
                 {
-                    alphaValueRow.append(newImage.getPixelAlphaAtLocation(CGPointMake(CGFloat(x), CGFloat(y)))!)
+                    alphaValues[x,y] = Float(newImage.getPixelAlphaAtLocation(CGPointMake(CGFloat(x), CGFloat(y)))!)
                 }
-                alphaValues.append(alphaValueRow)
             }
         }
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
+        return alphaValues
     }
 }
 

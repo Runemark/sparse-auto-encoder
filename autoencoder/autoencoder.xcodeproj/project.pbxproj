@@ -27,6 +27,7 @@
 		5BF113FB1AAF789200879C4C /* square5.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BF113F01AAF789200879C4C /* square5.png */; };
 		5BF113FD1AAF9D2100879C4C /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF113FC1AAF9D2100879C4C /* UIImageExtension.swift */; };
 		5BF114021AAFA9FD00879C4C /* Instance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF114011AAFA9FD00879C4C /* Instance.swift */; };
+		5BF114061AAFBE9700879C4C /* Array2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF114051AAFBE9700879C4C /* Array2D.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,7 @@
 		5BF113F01AAF789200879C4C /* square5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = square5.png; sourceTree = "<group>"; };
 		5BF113FC1AAF9D2100879C4C /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		5BF114011AAFA9FD00879C4C /* Instance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Instance.swift; sourceTree = "<group>"; };
+		5BF114051AAFBE9700879C4C /* Array2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array2D.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				5BF114011AAFA9FD00879C4C /* Instance.swift */,
+				5BF114051AAFBE9700879C4C /* Array2D.swift */,
 			);
 			name = Learning;
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5BF114021AAFA9FD00879C4C /* Instance.swift in Sources */,
+				5BF114061AAFBE9700879C4C /* Array2D.swift in Sources */,
 				5BF113C71AAF787400879C4C /* ViewController.swift in Sources */,
 				5BF113C21AAF787400879C4C /* AppDelegate.swift in Sources */,
 				5BF113C51AAF787400879C4C /* autoencoder.xcdatamodeld in Sources */,
