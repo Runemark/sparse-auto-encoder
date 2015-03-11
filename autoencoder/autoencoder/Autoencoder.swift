@@ -22,20 +22,29 @@ class Autoencoder
     var inputActivations:[Float]
     var hiddenActivations:[Float]
     var outputActivations:[Float]
+    
+    var outputDeltas:[Float]
+    var hiddenDeltas:[Float]
+    
     var featureCount:Int
     var hiddenCount:Int
     
+    // features (f), hidden (h)
     init(featureCount:Int, hiddenCount:Int)
     {
         self.featureCount = featureCount
         self.hiddenCount = hiddenCount
         
+        // h*(f+1)
         self.firstWeights = Array2D(cols:hiddenCount, rows:featureCount+1)
         self.secondWeights = Array2D(cols:featureCount, rows:hiddenCount+1)
         
-        self.inputActivations = Array<Float>(count:featureCount, repeatedValue:0)
-        self.hiddenActivations = Array<Float>(count:hiddenCount, repeatedValue:0)
+        self.inputActivations = Array<Float>(count:featureCount+1, repeatedValue:0)
+        self.hiddenActivations = Array<Float>(count:hiddenCount+1, repeatedValue:0)
         self.outputActivations = Array<Float>(count:featureCount, repeatedValue:0)
+        
+        self.outputDeltas = Array<Float>(count:featureCount, repeatedValue:0)
+        self.hiddenDeltas = Array<Float>(count:hiddenCount, repeatedValue:0)
         
         initializeWeights()
     }
@@ -47,13 +56,12 @@ class Autoencoder
     func trainOnDataset(dataset:Dataset)
     {
         let firstInstance = (features:dataset.getFeaturesForInstance(0), outputs:dataset.getOutputsForInstance(0))
-        
-        
+        trainOnInstance(firstInstance)
     }
     
-    func trainOnInstance(instance:([Float],[Float]))
+    func trainOnInstance(instance:(features:[Float],outputs:[Float]))
     {
-        
+        calculateCostForInstance(instance.features)
     }
     
     
@@ -113,18 +121,6 @@ class Autoencoder
     // Feedforward
     //////////////////////////////////////////////////////////////////////////////////////////
     
-    func calculateNetForNode(layer:Layer, index:Int)
-    {
-        if (layer == .Hidden)
-        {
-            // This will include the bias weight
-            for fromIndex in 0...featureCount
-            {
-                
-            }
-        }
-    }
-    
     func initializeInputAndBiasActivations(featureVector:[Float])
     {
         // Initialize input activations
@@ -156,6 +152,26 @@ class Autoencoder
         }
     }
     
+    func calculateCostForInstance(featureVector:[Float])
+    {
+        calculateActivationsForInstance(featureVector)
+    }
+    
+    func calculateActivationsForInstance(featureVector:[Float])
+    {
+        initializeInputAndBiasActivations(featureVector)
+        
+        for hiddenIndex in 0..<hiddenCount
+        {
+            hiddenActivations[hiddenIndex] = calculateActivation(.Hidden, index:hiddenIndex)
+        }
+        
+        for outputIndex in 0..<featureCount
+        {
+            outputActivations[outputIndex] = calculateActivation(.Output, index:outputIndex)
+        }
+    }
+    
     func calculateActivation(layer:Layer, index:Int) -> Float
     {
         if (layer == .Hidden)
@@ -167,19 +183,84 @@ class Autoencoder
                 let weight = getWeight(.Input, fromIndex:inputIndex, toIndex:index)
                 net += weight*inputActivations[inputIndex]
             }
+            
+            return sigmoid(net)
         }
         else
         {
+            var net:Float = 0
+            for hiddenIndex in 0...hiddenCount
+            {
+                let weight = getWeight(.Hidden, fromIndex:hiddenIndex, toIndex:index)
+                net += weight*hiddenActivations[hiddenIndex]
+            }
             
+            return sigmoid(net)
         }
-
-        // !
-        return 0
     }
     
     func sigmoid(value:Float) -> Float
     {
         return Float(Double(1.0) / (Double(1.0) + pow(M_E, -1 * Double(value))))
+    }
+    
+    //////////////////////////////////////////////////////////////////////////////////////////
+    // Backprop
+    //////////////////////////////////////////////////////////////////////////////////////////
+    
+    func calculateDeltas()
+    {
+        for outputIndex in 0..<featureCount
+        {
+            outputDeltas[outputIndex] = calculateDelta(.Output, index:outputIndex)
+        }
+        
+        for hiddenIndex in 0..<hiddenCount
+        {
+            hiddenDeltas[hiddenIndex] = calculateDelta(.Hidden, index:hiddenIndex)
+        }
+    }
+    
+    func calculateDelta(layer:Layer, index:Int) -> Float
+    {
+        if (layer == .Output)
+        {
+            let target = getActivation(.Input, index:index)
+            let actual = getActivation(.Output, index:index)
+            
+            return -1 * (target - actual) * sigmoidDerivative(actual)
+        }
+        else
+        {
+            var weightedSum:Float = 0
+            for j in 0..<featureCount
+            {
+                weightedSum += getWeight(.Hidden, fromIndex:index, toIndex:j) * outputDeltas[j]
+            }
+            
+            let activation = getActivation(.Hidden, index:index)
+            return weightedSum * sigmoidDerivative(activation)
+        }
+    }
+    
+    func sumAllWeights() -> Float
+    {
+        var sum:Float = 0
+        
+        let firstLayerWeights = firstWeights.toVector()
+        let secondLayerWeights = secondWeights.toVector()
+        
+        for weightIndex in 0..<firstLayerWeights.count
+        {
+            sum += firstLayerWeights[weightIndex]
+        }
+        
+        for weightIndex in 0..<secondLayerWeights.count
+        {
+            sum += secondLayerWeights[weightIndex]
+        }
+        
+        return sum
     }
     
     func sigmoidDerivative(value:Float) -> Float

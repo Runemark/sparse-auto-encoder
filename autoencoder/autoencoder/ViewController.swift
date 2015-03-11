@@ -31,8 +31,7 @@ class ViewController: UIViewController
         let featureCount = dataset.features.colCount()
         let hiddenCount = featureCount/2
         let autoencoder = Autoencoder(featureCount:featureCount, hiddenCount:hiddenCount)
-        
-        println("doot")
+        autoencoder.trainOnDataset(dataset)
     }
 
     override func didReceiveMemoryWarning()
