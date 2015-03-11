@@ -29,13 +29,14 @@ class Autoencoder
     var featureCount:Int
     var hiddenCount:Int
     
+    var learningRate:Float = 1
+    
     // features (f), hidden (h)
     init(featureCount:Int, hiddenCount:Int)
     {
         self.featureCount = featureCount
         self.hiddenCount = hiddenCount
         
-        // h*(f+1)
         self.firstWeights = Array2D(cols:hiddenCount, rows:featureCount+1)
         self.secondWeights = Array2D(cols:featureCount, rows:hiddenCount+1)
         
@@ -46,6 +47,9 @@ class Autoencoder
         self.outputDeltas = Array<Float>(count:featureCount, repeatedValue:0)
         self.hiddenDeltas = Array<Float>(count:hiddenCount, repeatedValue:0)
         
+        let spaceComplexity = 3*featureCount + 2*hiddenCount + 2*(featureCount*hiddenCount)
+        println("space complexity: \(spaceComplexity)")
+        
         initializeWeights()
     }
     
@@ -55,13 +59,18 @@ class Autoencoder
     
     func trainOnDataset(dataset:Dataset)
     {
-        let firstInstance = (features:dataset.getFeaturesForInstance(0), outputs:dataset.getOutputsForInstance(0))
+        // standard autoencoding: the features and targets are identical
+        let firstInstance = (features:dataset.getFeaturesForInstance(0), targets:dataset.getFeaturesForInstance(0))
+        
+        // de-noising: the features are slightly mutated
         trainOnInstance(firstInstance)
     }
     
-    func trainOnInstance(instance:(features:[Float],outputs:[Float]))
+    func trainOnInstance(instance:(features:[Float],targets:[Float]))
     {
-        calculateCostForInstance(instance.features)
+        calculateActivationsForInstance(instance.features)
+        calculateDeltas(instance.targets)
+        applyWeightDeltas()
     }
     
     
@@ -154,7 +163,7 @@ class Autoencoder
     
     func calculateCostForInstance(featureVector:[Float])
     {
-        calculateActivationsForInstance(featureVector)
+        // WARXING: FINISH
     }
     
     func calculateActivationsForInstance(featureVector:[Float])
@@ -208,38 +217,82 @@ class Autoencoder
     // Backprop
     //////////////////////////////////////////////////////////////////////////////////////////
     
-    func calculateDeltas()
+    func applyWeightDeltas()
+    {
+        // calculate firstWeights delta values (between input and hidden layers)
+        for fromWeightIndex in 0...featureCount
+        {
+            for toWeightIndex in 0..<hiddenCount
+            {
+                let oldWeightValue = firstWeights[fromWeightIndex,toWeightIndex]
+                let weightDelta = calculateWeightDelta(.Input, fromIndex:fromWeightIndex, toIndex:toWeightIndex)
+                firstWeights[fromWeightIndex,toWeightIndex] = oldWeightValue + weightDelta
+            }
+        }
+        
+        // calculate secondWeights delta values (between hidden and output layers)
+        for fromWeightIndex in 0...hiddenCount
+        {
+            for toWeightIndex in 0..<featureCount
+            {
+                let oldWeightValue = secondWeights[fromWeightIndex,toWeightIndex]
+                let weightDelta = calculateWeightDelta(.Hidden, fromIndex:fromWeightIndex, toIndex:toWeightIndex)
+                secondWeights[fromWeightIndex,toWeightIndex] = oldWeightValue + weightDelta
+            }
+        }
+    }
+    
+    func calculateWeightDelta(fromLayer:Layer, fromIndex:Int, toIndex:Int) -> Float
+    {
+        var nextLayer:Layer = .Output
+        if (fromLayer == .Input)
+        {
+            nextLayer = .Hidden
+        }
+        
+        return learningRate * getActivation(fromLayer, index:fromIndex) * getDelta(nextLayer, index:toIndex)
+    }
+    
+    func calculateDeltas(outputVector:[Float])
     {
         for outputIndex in 0..<featureCount
         {
-            outputDeltas[outputIndex] = calculateDelta(.Output, index:outputIndex)
+            outputDeltas[outputIndex] = calculateOutputDelta(outputIndex, target:outputVector[outputIndex])
         }
         
         for hiddenIndex in 0..<hiddenCount
         {
-            hiddenDeltas[hiddenIndex] = calculateDelta(.Hidden, index:hiddenIndex)
+            hiddenDeltas[hiddenIndex] = calculateHiddenDelta(hiddenIndex)
         }
     }
     
-    func calculateDelta(layer:Layer, index:Int) -> Float
+    func calculateOutputDelta(index:Int, target:Float) -> Float
+    {
+        let actual = getActivation(.Output, index:index)
+        return -1 * (target - actual) * sigmoidDerivative(actual)
+    }
+    
+    func calculateHiddenDelta(index:Int) -> Float
+    {
+        var weightedSum:Float = 0
+        for j in 0..<featureCount
+        {
+            weightedSum += getWeight(.Hidden, fromIndex:index, toIndex:j) * outputDeltas[j]
+        }
+        
+        let activation = getActivation(.Hidden, index:index)
+        return weightedSum * sigmoidDerivative(activation)
+    }
+    
+    func getDelta(layer:Layer, index:Int) -> Float
     {
         if (layer == .Output)
         {
-            let target = getActivation(.Input, index:index)
-            let actual = getActivation(.Output, index:index)
-            
-            return -1 * (target - actual) * sigmoidDerivative(actual)
+            return outputDeltas[index]
         }
         else
         {
-            var weightedSum:Float = 0
-            for j in 0..<featureCount
-            {
-                weightedSum += getWeight(.Hidden, fromIndex:index, toIndex:j) * outputDeltas[j]
-            }
-            
-            let activation = getActivation(.Hidden, index:index)
-            return weightedSum * sigmoidDerivative(activation)
+            return hiddenDeltas[index]
         }
     }
     
