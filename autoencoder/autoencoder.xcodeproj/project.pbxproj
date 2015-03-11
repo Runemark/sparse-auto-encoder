@@ -28,6 +28,8 @@
 		5BF113FD1AAF9D2100879C4C /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF113FC1AAF9D2100879C4C /* UIImageExtension.swift */; };
 		5BF114021AAFA9FD00879C4C /* Instance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF114011AAFA9FD00879C4C /* Instance.swift */; };
 		5BF114061AAFBE9700879C4C /* Array2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF114051AAFBE9700879C4C /* Array2D.swift */; };
+		5BF114081AAFEAEF00879C4C /* Dataset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF114071AAFEAEF00879C4C /* Dataset.swift */; };
+		5BF1140D1AAFF81800879C4C /* Autoencoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1140C1AAFF81800879C4C /* Autoencoder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +68,8 @@
 		5BF113FC1AAF9D2100879C4C /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		5BF114011AAFA9FD00879C4C /* Instance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Instance.swift; sourceTree = "<group>"; };
 		5BF114051AAFBE9700879C4C /* Array2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array2D.swift; sourceTree = "<group>"; };
+		5BF114071AAFEAEF00879C4C /* Dataset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dataset.swift; sourceTree = "<group>"; };
+		5BF1140C1AAFF81800879C4C /* Autoencoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Autoencoder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +115,7 @@
 				5BF113E61AAF789200879C4C /* shapes */,
 				5BF113C11AAF787400879C4C /* AppDelegate.swift */,
 				5BF113C61AAF787400879C4C /* ViewController.swift */,
+				5BF114091AAFF18200879C4C /* Preprocessing */,
 				5BF113FE1AAFA9D100879C4C /* Learning */,
 				5BF113FC1AAF9D2100879C4C /* UIImageExtension.swift */,
 				5BF113C81AAF787400879C4C /* Main.storyboard */,
@@ -176,9 +181,18 @@
 			isa = PBXGroup;
 			children = (
 				5BF114011AAFA9FD00879C4C /* Instance.swift */,
+				5BF114071AAFEAEF00879C4C /* Dataset.swift */,
 				5BF114051AAFBE9700879C4C /* Array2D.swift */,
+				5BF1140C1AAFF81800879C4C /* Autoencoder.swift */,
 			);
 			name = Learning;
+			sourceTree = "<group>";
+		};
+		5BF114091AAFF18200879C4C /* Preprocessing */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Preprocessing;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -293,9 +307,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				5BF114021AAFA9FD00879C4C /* Instance.swift in Sources */,
+				5BF114081AAFEAEF00879C4C /* Dataset.swift in Sources */,
 				5BF114061AAFBE9700879C4C /* Array2D.swift in Sources */,
 				5BF113C71AAF787400879C4C /* ViewController.swift in Sources */,
 				5BF113C21AAF787400879C4C /* AppDelegate.swift in Sources */,
+				5BF1140D1AAFF81800879C4C /* Autoencoder.swift in Sources */,
 				5BF113C51AAF787400879C4C /* autoencoder.xcdatamodeld in Sources */,
 				5BF113FD1AAF9D2100879C4C /* UIImageExtension.swift in Sources */,
 			);

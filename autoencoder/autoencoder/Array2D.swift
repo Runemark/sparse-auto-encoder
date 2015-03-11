@@ -9,27 +9,27 @@
 
 import Foundation
 
-class Array2D : NSObject
+class Array2D
 {
     var cols:Int, rows:Int
     var matrix:[Float]
     
-    override var description : String {
-        
-        var description = "cols = \(cols)\nrows = \(rows)\n"
-        for x in 0..<rows
-        {
-            description += "[\(x)]"
-            for y in 0..<cols
-            {
-                description += " \(y):\(matrix[cols * x + y])"
-            }
-            description += "\n"
-        }
-        
-        return description
-//        return "**** PageContentViewController\npageIndex equals ****\n"
-    }
+    // (Requires subclassing NSObject)
+//    override var description : String {
+//        
+//        var description = "cols = \(cols)\nrows = \(rows)\n"
+//        for x in 0..<rows
+//        {
+//            description += "[\(x)]"
+//            for y in 0..<cols
+//            {
+//                description += " \(y):\(matrix[cols * x + y])"
+//            }
+//            description += "\n"
+//        }
+//        
+//        return description
+//    }
     
     init(cols:Int, rows:Int) {
         self.cols = cols
@@ -37,13 +37,37 @@ class Array2D : NSObject
         matrix = Array(count:cols*rows, repeatedValue:0)
     }
     
-    subscript(col:Int, row:Int) -> Float {
-        get {
+    subscript(row:Int, col:Int) -> Float {
+        get
+        {
             return matrix[cols * row + col]
         }
-        set {
-            matrix[cols*row+col] = newValue
+        set
+        {
+            matrix[cols * row + col] = newValue
         }
+    }
+    
+    func getRow(rowIndex:Int) -> [Float]
+    {
+        var row = [Float]()
+        for colIndex in 0..<cols
+        {
+            row.append(matrix[cols*rowIndex + colIndex])
+        }
+        
+        return row
+    }
+    
+    func getCol(colIndex:Int) -> [Float]
+    {
+        var col = [Float]()
+        for rowIndex in 0..<rows
+        {
+            col.append(matrix[cols*rowIndex + colIndex])
+        }
+        
+        return col
     }
     
     func toVector() -> [Float]

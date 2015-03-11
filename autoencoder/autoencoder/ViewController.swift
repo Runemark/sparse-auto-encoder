@@ -20,19 +20,57 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
-    override func viewDidLoad() {
+class ViewController: UIViewController
+{
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        let instances = instancesFromImageNamed("square1", windowWidth:8, windowHeight:8)
-        println("Complete")
+        let dataset = datasetFromImageNamed("square1", windowWidth:8, windowHeight:8)
+        let featureCount = dataset.features.colCount()
+        let hiddenCount = featureCount/2
+        let autoencoder = Autoencoder(featureCount:featureCount, hiddenCount:hiddenCount)
+        
+        println("doot")
     }
 
-    override func didReceiveMemoryWarning() {
+    override func didReceiveMemoryWarning()
+    {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    
+    //////////////////////////////////////////////////////////////////////////////////////////
+    // DATA EXTRACTION
+    //////////////////////////////////////////////////////////////////////////////////////////
+    
+    func datasetFromImageNamed(imageName:String, windowWidth:Int, windowHeight:Int) -> Dataset
+    {
+        let alphaValues = alphaValuesInImageFile(imageName)
+        let chunks = slideWindowOverValues(alphaValues, windowWidth:windowWidth, windowHeight:windowHeight)
+        
+        let instanceCount = chunks.count
+        let featureCount = windowWidth * windowHeight
+        let outputCount = 1
+        
+        var dataset = Dataset(instances:instanceCount, featureCount:featureCount, outputCount:outputCount)
+        
+        for (i:Int, value:Array2D) in enumerate(chunks)
+        {
+            let featureVector = value.toVector()
+            
+            for (n:Int, floatValue:Float) in enumerate(featureVector)
+            {
+                dataset[0,i,n] = floatValue
+            }
+            
+            dataset[1,i,0] = Float(0)
+        }
+        
+        return dataset
     }
     
     func instancesFromImageNamed(imageName:String, windowWidth:Int, windowHeight:Int) -> [Instance]
