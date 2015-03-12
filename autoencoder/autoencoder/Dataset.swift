@@ -12,9 +12,11 @@ class Dataset
 {
     var features:Array2D
     var outputs:Array2D
+    var instanceCount:Int
     
     init(instances:Int, featureCount:Int, outputCount:Int)
     {
+        self.instanceCount = instances
         self.features = Array2D(cols:featureCount, rows:instances)
         self.outputs = Array2D(cols:outputCount, rows:instances)
     }

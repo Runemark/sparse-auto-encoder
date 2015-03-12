@@ -55,6 +55,43 @@ private extension UIImage {
 extension  UIImage {
     typealias RawColorType = (newRedColor:UInt8, newgreenColor:UInt8, newblueColor:UInt8,  newalphaValue:UInt8)
     
+    func setPixelAlphaAtPoint(point:CGPoint, alpha:UInt8) -> UIImage?
+    {
+        self.sanitizePoint(point)
+        let inImage:CGImageRef = self.CGImage
+        let context = self.createARGBBitmapContext(inImage)
+        
+        let pixelsWide = CGImageGetWidth(inImage)
+        let pixelsHigh = CGImageGetHeight(inImage)
+        let rect = CGRect(x:0, y:0, width:Int(pixelsWide), height:Int(pixelsHigh))
+        
+        //Clear the context
+        CGContextClearRect(context, rect)
+        
+        // Draw the image to the bitmap context. Once we draw, the memory
+        // allocated for the context for rendering will then contain the
+        // raw image data in the specified color space.
+        CGContextDrawImage(context, rect, inImage)
+        
+        // Now we can get a pointer to the image data associated with the bitmap
+        // context.
+        var data = CGBitmapContextGetData(context)
+        var dataType = UnsafeMutablePointer<UInt8>(data)
+        
+        let offset = 4*((Int(pixelsWide) * Int(point.y)) + Int(point.x))
+        dataType[offset] = alpha
+        
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedFirst.rawValue)
+        
+        let bitmapBytesPerRow = Int(pixelsWide) * 4
+        let bitmapByteCount = bitmapBytesPerRow * Int(pixelsHigh)
+        
+        let finalcontext = CGBitmapContextCreate(data, pixelsWide, pixelsHigh, CUnsignedLong(8),  CUnsignedLong(bitmapBytesPerRow), colorSpace, bitmapInfo)
+        
+        let imageRef = CGBitmapContextCreateImage(finalcontext)
+        return UIImage(CGImage: imageRef, scale: self.scale,orientation: self.imageOrientation)
+    }
     
     /*
     Change the color of pixel at a certain point.If you want more control try block based method to modify pixels.
@@ -97,7 +134,6 @@ extension  UIImage {
         
         let imageRef = CGBitmapContextCreateImage(finalcontext)
         return UIImage(CGImage: imageRef, scale: self.scale,orientation: self.imageOrientation)
-        
     }
     
     /*

@@ -54,16 +54,56 @@ class Autoencoder
     }
     
     //////////////////////////////////////////////////////////////////////////////////////////
+    // Visualization
+    //////////////////////////////////////////////////////////////////////////////////////////
+    
+    // what input x would cause the hidden nodes to be maximally activated?
+    
+    // for each hidden node
+    // for each input i
+        // xi (max input unit i) = Wij / sqrt( sum (weight^2) )
+    
+    func maximalInputVectorForHiddenNode(nodeIndex:Int) -> [Float]
+    {
+        var maximalInputVector = Array<Float>(count:featureCount, repeatedValue:0)
+        
+        for inputIndex in 0..<featureCount
+        {
+            maximalInputVector[inputIndex] = maximalInputForHiddenNode(nodeIndex, inputIndex:inputIndex)
+        }
+        
+        return maximalInputVector
+    }
+    
+    func maximalInputForHiddenNode(nodeIndex:Int, inputIndex:Int) -> Float
+    {
+        let weight = getWeight(.Input, fromIndex:inputIndex, toIndex:nodeIndex)
+        
+        var sumSquaredWeight:Float = 0
+        for i in 0..<featureCount
+        {
+            let inputWeight = getWeight(.Input, fromIndex:i, toIndex:nodeIndex)
+            let squaredInputWeight = Float(pow(Double(inputWeight), 2))
+            sumSquaredWeight += squaredInputWeight
+        }
+        
+        return weight / Float(sqrt(Double(sumSquaredWeight)))
+    }
+    
+    //////////////////////////////////////////////////////////////////////////////////////////
     // Training
     //////////////////////////////////////////////////////////////////////////////////////////
     
     func trainOnDataset(dataset:Dataset)
     {
-        // standard autoencoding: the features and targets are identical
-        let firstInstance = (features:dataset.getFeaturesForInstance(0), targets:dataset.getFeaturesForInstance(0))
-        
-        // de-noising: the features are slightly mutated
-        trainOnInstance(firstInstance)
+        for m in 0..<dataset.instanceCount
+        {
+            // standard autoencoding: the features and targets are identical
+            // vs. de-noising: the features are slightly mutated
+            let instance = (features:dataset.getFeaturesForInstance(m), targets:dataset.getFeaturesForInstance(m))
+            println("training on instance \(m) of \(dataset.instanceCount)")
+            trainOnInstance(instance)
+        }
     }
     
     func trainOnInstance(instance:(features:[Float],targets:[Float]))
@@ -72,7 +112,6 @@ class Autoencoder
         calculateDeltas(instance.targets)
         applyWeightDeltas()
     }
-    
     
     //////////////////////////////////////////////////////////////////////////////////////////
     // Weights
