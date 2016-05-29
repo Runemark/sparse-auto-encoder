@@ -48,7 +48,7 @@ class Autoencoder
         self.hiddenDeltas = Array<Float>(count:hiddenCount, repeatedValue:0)
         
         let spaceComplexity = 3*featureCount + 2*hiddenCount + 2*(featureCount*hiddenCount)
-        println("space complexity: \(spaceComplexity)")
+        print("space complexity: \(spaceComplexity)")
         
         initializeWeights()
     }
@@ -101,7 +101,7 @@ class Autoencoder
             // standard autoencoding: the features and targets are identical
             // vs. de-noising: the features are slightly mutated
             let instance = (features:dataset.getFeaturesForInstance(m), targets:dataset.getFeaturesForInstance(m))
-            println("training on instance \(m) of \(dataset.instanceCount)")
+            print("training on instance \(m) of \(dataset.instanceCount)")
             trainOnInstance(instance)
         }
     }

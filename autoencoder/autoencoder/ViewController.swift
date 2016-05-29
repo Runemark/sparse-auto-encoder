@@ -49,14 +49,14 @@ class ViewController: UIViewController
         {
             let maximalInputVector = autoencoder.maximalInputVectorForHiddenNode(hiddenIndex)
             
-            println(maximalInputVector)
+            print(maximalInputVector)
             
             let maximalWindow = inputVectorToWindow(maximalInputVector, width:windowSize, height:windowSize)
             
             maximalWindows.append(maximalWindow)
         }
         
-        for (index:Int, maximalWindow:Array2D) in enumerate(maximalWindows)
+        for (index, maximalWindow): (Int, Array2D) in maximalWindows.enumerate()
         {
             UIGraphicsBeginImageContextWithOptions(CGSizeMake(CGFloat(windowSize/2), CGFloat(windowSize/2)), true, 0.0)
             var newImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()
@@ -70,12 +70,12 @@ class ViewController: UIViewController
                 }
             }
             
-            let targetPath = docDirectory.stringByAppendingPathComponent("derp\(index).png")
-            UIImagePNGRepresentation(newImage).writeToFile(targetPath, atomically:true)
+            let targetPath = docDirectory.stringByAppendingString("derp\(index).png")
+            UIImagePNGRepresentation(newImage)!.writeToFile(targetPath, atomically:true)
             UIGraphicsEndImageContext()
         }
         
-        println("dir: \(docDirectory)")
+        print("dir: \(docDirectory)")
     }
 
     override func didReceiveMemoryWarning()
@@ -89,7 +89,7 @@ class ViewController: UIViewController
     //////////////////////////////////////////////////////////////////////////////////////////
     func inputVectorToWindow(inputVector:[Float], width:Int, height:Int) -> Array2D
     {
-        var window = Array2D(cols:width, rows:height)
+        let window = Array2D(cols:width, rows:height)
         
         for x in 0..<height
         {
@@ -132,7 +132,7 @@ class ViewController: UIViewController
             totalInstances += dataset.instanceCount
         }
         
-        var mergedDataset = Dataset(instances:totalInstances, featureCount:featureCount, outputCount:outputCount)
+        let mergedDataset = Dataset(instances:totalInstances, featureCount:featureCount, outputCount:outputCount)
         
         for dataset in datasets
         {
@@ -141,7 +141,7 @@ class ViewController: UIViewController
             for localInstance in 0..<dataset.instanceCount
             {
                 let featureVector = dataset.getFeaturesForInstance(localInstance)
-                for (n:Int, feature:Float) in enumerate(featureVector)
+                for (n, feature): (Int, Float) in featureVector.enumerate()
                 {
                     mergedDataset[0,globalInstance,n] = feature
                 }
@@ -163,13 +163,13 @@ class ViewController: UIViewController
         let featureCount = windowWidth * windowHeight
         let outputCount = 1
         
-        var dataset = Dataset(instances:instanceCount, featureCount:featureCount, outputCount:outputCount)
+        let dataset = Dataset(instances:instanceCount, featureCount:featureCount, outputCount:outputCount)
         
-        for (i:Int, value:Array2D) in enumerate(chunks)
+        for (i, value): (Int, Array2D) in chunks.enumerate()
         {
             let featureVector = value.toVector()
             
-            for (n:Int, floatValue:Float) in enumerate(featureVector)
+            for (n, floatValue): (Int, Float) in featureVector.enumerate()
             {
                 dataset[0,i,n] = floatValue
             }
@@ -207,7 +207,7 @@ class ViewController: UIViewController
                 for y in 0...values.colCount() - windowWidth
                 {
                     // Chunk identified, populate Array2D with values
-                    var chunk = Array2D(cols:windowWidth, rows:windowHeight)
+                    let chunk = Array2D(cols:windowWidth, rows:windowHeight)
                     for chunk_x in 0..<windowHeight
                     {
                         for chunk_y in 0..<windowWidth
@@ -226,17 +226,17 @@ class ViewController: UIViewController
     func alphaValuesInImageFile(fileName:String) -> Array2D
     {
         let fileURL = NSBundle.mainBundle().URLForResource(fileName, withExtension:"png")
-        let beginImage = CIImage(contentsOfURL:fileURL)
+        let beginImage = CIImage(contentsOfURL:fileURL!)
         
         let context = CIContext(options:nil)
-        let cgimg = context.createCGImage(beginImage, fromRect:beginImage.extent())
-        let width = Int(beginImage.extent().width)
-        let height = Int(beginImage.extent().height)
+        let cgimg:CGImage = context.createCGImage(beginImage!, fromRect:beginImage!.extent)
+        let width = Int(beginImage!.extent.width)
+        let height = Int(beginImage!.extent.height)
+        let alphaValues = Array2D(cols:width, rows:height)
         
-        var alphaValues = Array2D(cols:width, rows:height)
         
-        if let newImage = UIImage(CGImage:cgimg)
-        {
+        let newImage = UIImage(CGImage: cgimg)
+        if (newImage.CGImage != nil){
             for x in 0..<height
             {
                 for y in 0..<width
@@ -245,8 +245,11 @@ class ViewController: UIViewController
                 }
             }
         }
-        
+       
+
         return alphaValues
     }
+    
+
 }
 
