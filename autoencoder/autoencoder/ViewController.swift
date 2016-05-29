@@ -29,8 +29,8 @@ class ViewController: UIViewController
         
         let windowSize = 4
         
-//        let dataset = datasetFromImageNamed("square1", windowWidth:windowSize, windowHeight:windowSize)
         let dataset = datasetFromImagesNamed(["square1", "square2", "square3", "square4", "square5"], windowWidth:windowSize, windowHeight:windowSize)
+      //  let dataset = datasetFromImagesNamed(["circle1", "circle2", "circle3"], windowWidth:windowSize, windowHeight:windowSize)
         let featureCount = dataset.features.colCount()
         let hiddenCount = featureCount/2
         let autoencoder = Autoencoder(featureCount:featureCount, hiddenCount:hiddenCount)
@@ -70,7 +70,7 @@ class ViewController: UIViewController
                 }
             }
             
-            let targetPath = docDirectory.stringByAppendingString("derp\(index).png")
+            let targetPath = docDirectory.stringByAppendingString("/derp\(index).png")
             UIImagePNGRepresentation(newImage)!.writeToFile(targetPath, atomically:true)
             UIGraphicsEndImageContext()
         }
@@ -145,7 +145,7 @@ class ViewController: UIViewController
                 {
                     mergedDataset[0,globalInstance,n] = feature
                 }
-                globalInstance++
+                globalInstance += 1
             }
             
             mergedDataset[1,globalInstance,0] = Float(0)
