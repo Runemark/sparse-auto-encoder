@@ -75,8 +75,8 @@ extension  UIImage {
         
         // Now we can get a pointer to the image data associated with the bitmap
         // context.
-        var data = CGBitmapContextGetData(context)
-        var dataType = UnsafeMutablePointer<UInt8>(data)
+        let data = CGBitmapContextGetData(context)
+        let dataType = UnsafeMutablePointer<UInt8>(data)
         
         let offset = 4*((Int(pixelsWide) * Int(point.y)) + Int(point.x))
         dataType[offset] = alpha
@@ -85,7 +85,7 @@ extension  UIImage {
         let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedFirst.rawValue)
         
         let bitmapBytesPerRow = Int(pixelsWide) * 4
-        let bitmapByteCount = bitmapBytesPerRow * Int(pixelsHigh)
+        _ = bitmapBytesPerRow * Int(pixelsHigh)
         
         let finalcontext = CGBitmapContextCreate(data, pixelsWide, pixelsHigh, Int(8),  Int(bitmapBytesPerRow), colorSpace, bitmapInfo.rawValue)
         
@@ -115,8 +115,8 @@ extension  UIImage {
         
         // Now we can get a pointer to the image data associated with the bitmap
         // context.
-        var data = CGBitmapContextGetData(context)
-        var dataType = UnsafeMutablePointer<UInt8>(data)
+        let data = CGBitmapContextGetData(context)
+        let dataType = UnsafeMutablePointer<UInt8>(data)
         
         let offset = 4*((Int(pixelsWide) * Int(point.y)) + Int(point.x))
         dataType[offset]   = color.newalphaValue
@@ -128,7 +128,7 @@ extension  UIImage {
         let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedFirst.rawValue)
         
         let bitmapBytesPerRow = Int(pixelsWide) * 4
-        let bitmapByteCount = bitmapBytesPerRow * Int(pixelsHigh)
+        _ = bitmapBytesPerRow * Int(pixelsHigh)
         
         let finalcontext = CGBitmapContextCreate(data, pixelsWide, pixelsHigh, Int(8),  Int(bitmapBytesPerRow), colorSpace, bitmapInfo.rawValue)
         
@@ -224,7 +224,7 @@ extension  UIImage {
         let rect = CGRect(x:0, y:0, width:Int(pixelsWide), height:Int(pixelsHigh))
         
         let bitmapBytesPerRow = Int(pixelsWide) * 4
-        let bitmapByteCount = bitmapBytesPerRow * Int(pixelsHigh)
+        _ = bitmapBytesPerRow * Int(pixelsHigh)
         
         //Clear the context
         CGContextClearRect(context, rect)
@@ -238,14 +238,13 @@ extension  UIImage {
         // context.
         
         
-        var data = CGBitmapContextGetData(context)
-        var dataType = UnsafeMutablePointer<UInt8>(data)
-        let point: CGPoint = CGPointMake(0, 0)
-        
-        for var x = 0; x < Int(pixelsWide) ; x++ {
-            for var y = 0; y < Int(pixelsHigh) ; y++ {
+        let data = CGBitmapContextGetData(context)
+        let dataType = UnsafeMutablePointer<UInt8>(data)
+     
+        for x in 0 ..< Int(pixelsWide)  {
+            for y in 0 ..< Int(pixelsHigh)  {
                 let offset = 4*((Int(pixelsWide) * Int(y)) + Int(x))
-                let alpha = dataType[offset]
+                _ = dataType[offset]
                 let red = dataType[offset+1]
                 let green = dataType[offset+2]
                 let blue = dataType[offset+3]
@@ -283,7 +282,7 @@ extension  UIImage {
         let rect = CGRect(x:0, y:0, width:Int(pixelsWide), height:Int(pixelsHigh))
         
         let bitmapBytesPerRow = Int(pixelsWide) * 4
-        let bitmapByteCount = bitmapBytesPerRow * Int(pixelsHigh)
+        _ = bitmapBytesPerRow * Int(pixelsHigh)
         
         //Clear the context
         CGContextClearRect(context, rect)
@@ -297,12 +296,12 @@ extension  UIImage {
         // context.
         
         
-        var data = CGBitmapContextGetData(context)
-        var dataType = UnsafeMutablePointer<UInt8>(data)
-        let point: CGPoint = CGPointMake(0, 0)
+        let data = CGBitmapContextGetData(context)
+        let dataType = UnsafeMutablePointer<UInt8>(data)
+        let _  = CGPointMake(0, 0)
         
-        for var x = 0; x < Int(pixelsWide) ; x++ {
-            for var y = 0; y < Int(pixelsHigh) ; y++ {
+        for x in 0 ..< Int(pixelsWide)  {
+            for y in 0 ..< Int(pixelsHigh)  {
                 let offset = 4*((Int(pixelsWide) * Int(y)) + Int(x))
                 let alpha = dataType[offset]
                 let red = dataType[offset+1]
