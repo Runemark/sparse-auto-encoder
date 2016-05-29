@@ -29,8 +29,8 @@ class ViewController: UIViewController
         
         let windowSize = 4
         
-        let dataset = datasetFromImagesNamed(["square1", "square2", "square3", "square4", "square5"], windowWidth:windowSize, windowHeight:windowSize)
-      //  let dataset = datasetFromImagesNamed(["circle1", "circle2", "circle3"], windowWidth:windowSize, windowHeight:windowSize)
+       // let dataset = datasetFromImagesNamed(["square1", "square2", "square3", "square4", "square5"], windowWidth:windowSize, windowHeight:windowSize)
+        let dataset = datasetFromImagesNamed(["circle1", "circle2", "circle3","circle4"], windowWidth:windowSize, windowHeight:windowSize)
         let featureCount = dataset.features.colCount()
         let hiddenCount = featureCount/2
         let autoencoder = Autoencoder(featureCount:featureCount, hiddenCount:hiddenCount)
@@ -65,8 +65,13 @@ class ViewController: UIViewController
             {
                 for y in 0..<maximalWindow.colCount()
                 {
-                    let maximalValue = Int(floor(maximalWindow[x,y]*255))
-                    newImage = newImage.setPixelColorAtPoint(CGPointMake(CGFloat(x), CGFloat(y)), color:(newRedColor:UInt8(0), newgreenColor:UInt8(0), newblueColor:UInt8(0),  newalphaValue:UInt8(maximalValue)))!
+                    let maximalValue = Int(abs(floor(maximalWindow[x,y]*255)))
+                 //   print("max:",maximalValue)
+                    let color = (newRedColor:UInt8(0), newgreenColor:UInt8(0), newblueColor:UInt8(0),  newalphaValue:UInt8(maximalValue))
+                    let pt = CGPointMake(CGFloat(x), CGFloat(y))
+                    if let img =  newImage.setPixelColorAtPoint(pt, color:color){
+                        newImage = img
+                    }
                 }
             }
             
